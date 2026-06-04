@@ -1,0 +1,29 @@
+name: catalogo_subastas
+
+services:
+  app:
+    image: shinsenter/laravel:dev-php8.5-nginx
+    container_name: catalogo_app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: catalogo_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: catalogo_subastas
+      MYSQL_USER: admin-arom
+      MYSQL_PASSWORD: aromdev123
+      MYSQL_ROOT_PASSWORD: aromdev123
+    ports:
+      - "3307:3306"
+    volumes:
+      - catalogo_subastas_mysql_data:/var/lib/mysql
+
+volumes:
+  catalogo_subastas_mysql_data:
