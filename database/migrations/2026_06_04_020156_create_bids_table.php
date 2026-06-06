@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bids', function (Blueprint $table) {
+            // Database schema for bids
             $table->uuid('id')->primary();
+            $table->decimal('amount', 10, 2);
+            // Foreign keys to users and auctions
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('auction_id')->constrained('auctions')->onDelete('cascade');
 
             $table->timestamps();
         });

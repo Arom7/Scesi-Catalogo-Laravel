@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            // Schema for products table
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->decimal('base_price', 10, 2);
+            $table->enum('status', ['draft', 'pending_approval', 'active' , 'suspended', 'completed' , 'cancelled'])->default('pending_approval');
+            // Timestamps for created_at and updated_at
             $table->timestamps();
         });
     }
