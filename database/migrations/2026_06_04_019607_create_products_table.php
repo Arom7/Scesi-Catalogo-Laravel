@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['draft', 'pending_approval', 'active' , 'suspended', 'completed' , 'cancelled'])->default('pending_approval');
             // Timestamps for created_at and updated_at
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

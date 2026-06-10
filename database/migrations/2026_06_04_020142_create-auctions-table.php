@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignUuid('product_id')->constrained()->onDelete('cascade');
             // Timestamps for created_at and updated_at
             $table->timestamps();
+            // Soft deletes
+            $table->softDeletes();
         });
     }
 
