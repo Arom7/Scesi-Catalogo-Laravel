@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Table('products',
         key: 'id',
         keyType: 'string',
-        autoIncrement: false,
-        dateFormat: ['created_at', 'updated_at']
+        incrementing: false,
     )]
 
 #[Connection('mysql')]
