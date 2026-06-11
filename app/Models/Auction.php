@@ -40,21 +40,21 @@ class Auction extends Model
 
     // Related models
     /**
-     * Get the product associated with the auction.
+     * Get the product associated with the auction. (Relationships principal)
      */
     public function product(){
         return $this->belongsTo(Product::class);
     }
 
     /**
-     * Get the bids associated with the auction.
+     * Get the bids associated with the auction. (Relationships principal)
      */
     public function bids(){
         return $this->hasMany(Bid::class);
     }
 
     /**
-     * Get current highest bid for the auction.
+     * Get current highest bid for the auction. (Relationships reference)
      */
     public function highestBid(){
         return $this->belongsTo(Bid::class, 'current_highest_bid', 'id');

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\Connection;
 
-#[Table('auctions',
+#[Table('bids',
         key: 'id',
         keyType: 'string',
         autoIncrement: false,
@@ -35,14 +35,16 @@ class Bid extends Model
     /**
      * Get the auction associated with the bid.
      */
+    /**
+     * Get the auction associated with this bid. (Relationships principal)
+     */
     public function auction(){
         return $this->belongsTo(Auction::class);
     }
 
-    public function auctions(){
-        return $this->hasMany(Auction::class);
-    }
-
+    /**
+     * Get the user who made this bid. (Relationships principal)
+     */
     public function user(){
         return $this->belongsTo(User::class);
     }
