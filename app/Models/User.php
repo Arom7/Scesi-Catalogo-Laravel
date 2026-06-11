@@ -29,4 +29,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Related models (Relationships principal)
+    public function bids(){
+        return $this->hasMany(Bid::class);
+    }
 }
