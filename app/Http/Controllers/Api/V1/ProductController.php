@@ -41,10 +41,10 @@ class ProductController extends Controller
     {
         try{
             $dataProductValidated = $request->safe()->only(['name', 'description', 'base_price']);
-
+            $images = $request->safe()->only('images')['images'] ?? [];
             return response()->json([
                 'message' => 'Producto registrado correctamente',
-                'data' => $this->productService->store($dataProductValidated)
+                'data' => $this->productService->store($dataProductValidated, $images)
             ], 201);
         }catch(\Exception $e){
             return response()->json([
@@ -79,9 +79,10 @@ class ProductController extends Controller
     {
         try{
             $dataProductValidated = $request->safe()->only(['name', 'description', 'base_price']);
+            $images = $request->safe()->only('images')['images'] ?? [];
             return response()->json([
                 'message' => 'Producto actualizado correctamente',
-                'data' => $this->productService->update($id, $dataProductValidated)
+                'data' => $this->productService->update($id, $dataProductValidated, $images)
             ], 200);
         }catch(\Exception $e){
             return response()->json([
