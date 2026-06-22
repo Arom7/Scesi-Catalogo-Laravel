@@ -9,4 +9,6 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/{id}', 'show'); // Get a specific product
     Route::put('/{id}', 'update'); // Update a specific product
     Route::delete('/{id}', 'destroy'); // Delete a specific product
+
+    Route::post('/new', 'prueba'); // Prueba endpoint
 });

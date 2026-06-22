@@ -5,23 +5,37 @@ namespace App\Services;
 use App\Models\Product;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
+    public function __construct(
+        private ProductImageService $productImageService
+    )
+    {}
+
     /**
      * Lista de recursos.
      */
     public function index(array $filters = [], int $perPage = 15)
     {
-        return new ProductCollection(Product::all());
+        return new ProductCollection(Product::with('productImages')->get());
     }
 
     /**
      * Crea un nuevo recurso.
      */
-    public function store(array $data)
+    public function store(array $data, array $images = [])
     {
-        return new ProductResource(Product::create($data));
+        return DB::transaction(function () use ($data, $images) {
+            $newProduct = Product::create($data);
+
+            // Almacenar imágenes asociadas al producto
+            $this->productImageService->storeImageProduct($newProduct->id, $images);
+
+            // Convertir producto a recurso para incluir las imágenes
+            return new ProductResource($newProduct);
+        });
     }
 
     /**
@@ -35,9 +49,16 @@ class ProductService
     /**
      * Actualiza un recurso por ID.
      */
-    public function update(string $id, array $data)
+    public function update(string $id, array $data, array $images = [])
     {
-        return new ProductResource(tap(Product::findOrFail($id))->update($data));
+        return DB::transaction(function () use ($id, $data, $images) {
+            $product = tap(Product::findOrFail($id))->update($data);
+
+        // Actualizar imágenes asociadas al producto
+        // $this->productImageService->updateImages($product, $images);
+
+            return new ProductResource($product);
+        });
     }
 
     /**

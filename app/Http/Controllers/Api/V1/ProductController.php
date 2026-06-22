@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ProductService;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -34,14 +35,21 @@ class ProductController extends Controller
         }
     }
 
+    public function prueba(Request $request)
+    {
+        dd($request->all());
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreProductRequest $request)
     {
         try{
+
             $dataProductValidated = $request->safe()->only(['name', 'description', 'base_price']);
-            $images = $request->safe()->only('images')['images'] ?? [];
+            $images = $request->file('images', []);
+            $images = is_array($images) ? $images : [$images];
             return response()->json([
                 'message' => 'Producto registrado correctamente',
                 'data' => $this->productService->store($dataProductValidated, $images)
