@@ -11,8 +11,7 @@ class ProductService
 {
     public function __construct(
         private ProductImageService $productImageService
-    )
-    {}
+    ) {}
 
     /**
      * Lista de recursos.
@@ -54,8 +53,15 @@ class ProductService
         return DB::transaction(function () use ($id, $data, $images) {
             $product = tap(Product::findOrFail($id))->update($data);
 
-        // Actualizar imágenes asociadas al producto
-        // $this->productImageService->updateImages($product, $images);
+            // Actualizar imágenes asociadas al producto, para ello primero las eliminamos y luego las volvemos a crear
+            if ($product->productImages()->exists()) {
+                $existingImages = $product->productImages()->pluck('id')->toArray();
+                foreach ($existingImages as $imageId) {
+                    $this->productImageService->destroyImageProduct($imageId);
+                }
+            }
+            // Sea que se tenga imagenes o no igual se hace el registro de las nuevas imagenes
+            $this->productImageService->storeImageProduct($product->id, $images);
 
             return new ProductResource($product);
         });

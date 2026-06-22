@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\Connection;
 
-#[Table('auctions',
+#[Table('product_images',
         key: 'id',
         keyType: 'string',
-        autoIncrement: false,
-        dateFormat: ['created_at', 'updated_at']
+        incrementing: false,
     )]
 
 #[Connection('mysql')]
@@ -40,6 +40,10 @@ class ProductImage extends Model
     }
 
      // Scopes
+    public function scopeMain(Builder $query): Builder
+    {
+        return $query->where('is_main', true);
+    }
 
 
     // Helpers methods

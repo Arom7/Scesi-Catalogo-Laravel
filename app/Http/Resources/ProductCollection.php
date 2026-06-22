@@ -20,6 +20,7 @@ class ProductCollection extends ResourceCollection
                 'name' => $product->name,
                 'description' => $product->description,
                 'base_price' => $product->base_price,
+                'images' => $product->productImages->pluck('image_url')->values()->all(),
             ];
         })->toArray();
     }

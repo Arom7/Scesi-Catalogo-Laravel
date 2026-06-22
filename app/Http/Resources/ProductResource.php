@@ -19,6 +19,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->base_price,
+            'image_main' => $this->productImages()->main()->value('image_url') ?? 'No tiene imagen principal'
         ];
     }
 }
